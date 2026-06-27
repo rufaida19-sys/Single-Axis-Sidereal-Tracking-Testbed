@@ -12,7 +12,7 @@ In this project i will use the classic single-arm barn door star tracker as a fo
 ## Objectives
 
 - Design and build a single-arm
-barn door sidereal tracker.
+barn door sidereal tracker using accessible and affordable materials
 - Automate the design using an Arduino-compatible microcontroller and stepper motor driver.
 - Establish a baseline by evaluating constant-speed sidereal tracking performance.
 - Derive the theoretical tangent error of a tangent-arm tracker and predict the exact star trailing at constant speed.
