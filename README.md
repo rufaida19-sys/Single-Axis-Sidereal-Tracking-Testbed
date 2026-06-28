@@ -31,5 +31,16 @@ long-exposure DSLR astrophotography.
 - Document the complete design, development, and experimental process.
 
 
+
 ## Experimental Phases
-TK
+| Phase | Research Question | Expected Outcome |
+|---|---|---|
+| **0. Theoretical Model** | What tracking error should an ideal tangent-arm tracker exhibit? | Mathematical model of tangent error and predicted star trailing. |
+| **1. Engineering Validation** | Is the tracker mechanically and electronically reliable enough for experimentation? | Verified operation of the motor, electronics, and mechanical drive system. |
+| **2. Baseline Tracking** | How accurately does a constant-speed tangent-arm tracker follow the night sky? | Baseline tracking performance compared with theoretical predictions. |
+| **3. Residual Error Analysis** | Why does the measured tracking error differ from the theoretical prediction? | Identification of the dominant sources of tracking error. |
+| **4. Mechanical Investigation** | How much do mechanical improvements reduce total tracking error? | Quantitative comparison of tracking performance before and after mechanical modifications. |
+| **5. Polar Alignment Investigation** | How does the accuracy of polar alignment influence tracking performance? | Comparison of different alignment methods and their effect on maximum usable exposure time. |
+| **6. Tangent-Error Compensation** | How much does software-based tangent-error compensation improve tracking accuracy? | Direct comparison between constant-speed and compensated tracking. |
+| **7. Final Validation** | What is the maximum achievable performance of the optimized tracker? | Final tracking accuracy, exposure limits, and comparison with theoretical expectations. |
+| **8. Astrophotography Demonstration** | What imaging performance can the completed system achieve under dark skies? | Final processed astrophotographs captured with the completed tracker. |
