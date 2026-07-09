@@ -4,10 +4,10 @@
 
 **Author:** Rufaida
  **Status:** Planning Phase
-**Last Updated:** June 29th, 2026
+**Last Updated:** July 10th, 2026
 
 ## Overview
-In this project i will use the classic single-arm barn door star tracker as a foundation for an iterative engineering investigation into sidereal tracking performance. Rather than simply replicating an existing design, I will modify the tracker through several iterations, to look into how factors such as tangent error compensation, polar alignment accuracy and mechanical stability affect its ability to track the night sky for long exposure astrophotography. 
+In this project i will use the classic single-arm barn door star tracker (inspired by [George Haig's design](https://en.wikipedia.org/wiki/Barn_door_tracker)) as a foundation for an iterative engineering investigation into sidereal tracking performance. Rather than simply replicating an existing design, I will modify the tracker through several iterations, to look into how factors such as tangent error compensation, polar alignment accuracy and mechanical stability affect its ability to track the night sky for long exposure astrophotography. 
 
 ## Objectives
 
