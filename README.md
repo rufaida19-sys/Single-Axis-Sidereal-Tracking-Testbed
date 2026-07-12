@@ -44,3 +44,4 @@ long-exposure DSLR astrophotography.
 | **6. Tangent-Error Compensation** | How much does software-based tangent-error compensation improve tracking accuracy? | Direct comparison between constant-speed and compensated tracking. |
 | **7. Final Validation** | What is the maximum achievable performance of the optimized tracker? | Final tracking accuracy, exposure limits, and comparison with theoretical expectations. |
 | **8. Astrophotography Demonstration** | What imaging performance can the completed system achieve under dark skies? | Final processed astrophotographs captured with the completed tracker. |
+###  [Try the Live Minimax Tracker Calculator Here!](https://rufaida19-sys.github.io/Single-Axis-Sidereal-Tracking-Testbed/calculator/calculator.html)
