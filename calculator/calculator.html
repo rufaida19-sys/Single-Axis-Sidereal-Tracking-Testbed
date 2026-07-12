@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barn Door Star Tracker Constant Motor Speed Calculator (Straight Rod)</title>
+    <!-- Import Chart.js for the graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.5rem; color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1rem; }
+        button { width: 100%; padding: 12px; background-color: #2980b9; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: background 0.3s; font-weight: bold; margin-top: 10px; }
+        button:hover { background-color: #34495e; }
+        .results { margin-top: 25px; padding: 20px; background-color: #e8f4f8; border-left: 5px solid #2980b9; border-radius: 5px; display: none; }
+        .results p { margin: 10px 0; font-size: 1.1rem; }
+        .highlight { font-weight: bold; color: #c0392b; }
+        canvas { margin-top: 30px; max-width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Barn Door Star Tracker Constant Motor Speed Calculator (Straight Rod)</h1>
+    
+    <div class="input-group">
+        <label for="L_mm">Hinge-to-Threaded-Rod Distance (L) in mm:</label>
+        <input type="number" id="L_mm" value="300" step="any">
+    </div>
+    
+    <div class="input-group">
+        <label for="T_min">Target Exposure Time in minutes:</label>
+        <input type="number" id="T_min" value="20" step="any">
+    </div>
+    
+    <div class="input-group">
+        <label for="pitch">Threaded Rod Pitch (mm per turn, e.g., 1.0 for M6):</label>
+        <input type="number" id="pitch" value="1.0" step="any">
+    </div>
+    
+    <button onclick="calculateAndGraph()">Calculate Minimax Speed</button>
+
+    <div class="results" id="resultsBox">
+        <p>Ideal Linear Speed: <span class="highlight" id="resSpeed"></span> mm/s</p>
+        <p>Required Motor Speed: <span class="highlight" id="resRPM"></span> RPM</p>
+        <p>Worst-case Error: <span class="highlight" id="resError"></span> arcseconds</p>
+        <p>Peak Error Time: <span class="highlight" id="resTime"></span></p>
+    </div>
+
+    <canvas id="errorChart"></canvas>
+</div>
+
+<script>
+    const omega = (2 * Math.PI) / 86164.0905;
+    let chartInstance = null;
+
+    // JavaScript implementation of a Golden Section Search optimization algorithm
+    function minimize_scalar(f, a, b, tol=1e-7) {
+        const phi = (1 + Math.sqrt(5)) / 2;
+        const resphi = 2 - phi;
+        let c = a + resphi * (b - a);
+        let d = b - resphi * (b - a);
+        let fc = f(c);
+        let fd = f(d);
+        
+        while (Math.abs(b - a) > tol) {
+            if (fc < fd) {
+                b = d; d = c; fd = fc;
+                c = a + resphi * (b - a);
+                fc = f(c);
+            } else {
+                a = c; c = d; fc = fd;
+                d = b - resphi * (b - a);
+                fd = f(d);
+            }
+        }
+        return (a + b) / 2;
+    }
+
+    function calculateAndGraph() {
+        const L_mm = parseFloat(document.getElementById('L_mm').value);
+        const T_seconds = parseFloat(document.getElementById('T_min').value) * 60;
+        const pitch = parseFloat(document.getElementById('pitch').value);
+
+        // 1. Minimax Optimization Logic
+        function max_angular_error(v) {
+            let k = v / L_mm;
+            if (k <= omega) return Math.abs(Math.atan(k * T_seconds) - omega * T_seconds);
+            
+            let t_c = (1 / k) * Math.sqrt(k / omega - 1);
+            let error_T = Math.atan(k * T_seconds) - omega * T_seconds;
+            
+            if (t_c < T_seconds) {
+                let error_tc = Math.atan(k * t_c) - omega * t_c;
+                return Math.max(Math.abs(error_tc), Math.abs(error_T));
+            }
+            return Math.abs(error_T);
+        }
+
+        // Search for optimal velocity
+        const optimal_v = minimize_scalar(max_angular_error, L_mm * omega, L_mm * omega * 1.5);
+        const k_opt = optimal_v / L_mm;
+        
+        let t_c_opt = (k_opt / omega - 1) >= 0 ? (1 / k_opt) * Math.sqrt(k_opt / omega - 1) : null;
+        if (t_c_opt > T_seconds) t_c_opt = null; // Ignore if peak is outside exposure time
+
+        const max_error_rad = max_angular_error(optimal_v);
+        const max_error_arcsec = max_error_rad * (180 * 3600 / Math.PI);
+        const rpm = (optimal_v / pitch) * 60;
+
+        // 2. Update UI text
+        document.getElementById('resultsBox').style.display = 'block';
+        document.getElementById('resSpeed').innerText = optimal_v.toFixed(6);
+        document.getElementById('resRPM').innerText = rpm.toFixed(4);
+        document.getElementById('resError').innerText = max_error_arcsec.toFixed(2);
+        document.getElementById('resTime').innerText = t_c_opt ? `${t_c_opt.toFixed(1)} seconds` : "Peaks at the very end";
+
+        // 3. Graph Generation
+        const t_vals = [];
+        const error_vals = [];
+        for (let t = 0; t <= T_seconds; t += Math.max(1, T_seconds/100)) {
+            t_vals.push(t);
+            let e = (Math.atan((optimal_v * t) / L_mm) - omega * t) * (180 * 3600 / Math.PI);
+            error_vals.push({x: t, y: e});
+        }
+
+        const pointData = [];
+        if (t_c_opt) {
+            let e_tc = (Math.atan((optimal_v * t_c_opt) / L_mm) - omega * t_c_opt) * (180 * 3600 / Math.PI);
+            pointData.push({x: t_c_opt, y: e_tc, label: 'Stationary Point'});
+        }
+        let e_T = (Math.atan((optimal_v * T_seconds) / L_mm) - omega * T_seconds) * (180 * 3600 / Math.PI);
+        pointData.push({x: T_seconds, y: e_T, label: 'Endpoint'});
+
+        if (chartInstance) chartInstance.destroy();
+        const ctx = document.getElementById('errorChart').getContext('2d');
+        
+        chartInstance = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Tracking Error',
+                    data: error_vals,
+                    showLine: true,
+                    borderColor: '#2ca02c',
+                    pointRadius: 0,
+                    borderWidth: 2
+                }, {
+                    label: 'Critical Points',
+                    data: pointData,
+                    backgroundColor: '#d62728',
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Minimax Optimization: Angular Tracking Error', font: { size: 16 } },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `${ctx.raw.label || 'Error'}: ${ctx.raw.y.toFixed(2)} arcsec at ${ctx.raw.x.toFixed(0)}s`
+                        }
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Exposure Time (seconds)' } },
+                    y: { title: { display: true, text: 'Tracking Error (arcseconds)' } }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
