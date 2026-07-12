@@ -14,6 +14,7 @@ In this project i will use the classic single-arm barn door star tracker (inspir
 - Design and build a single-arm
 barn door sidereal tracker using accessible and affordable materials
 - Automate the design using an Arduino-compatible microcontroller and stepper motor driver.
+- Make a calculator to output the optimum constant speed.
 - Establish a baseline by evaluating constant-speed sidereal tracking performance.
 - Derive the theoretical tangent error of a tangent-arm tracker and predict the exact star trailing at constant speed.
 - Validate the derivation experimentally by taking constant-speed photos and measuring the actual star trails.
@@ -44,4 +45,11 @@ long-exposure DSLR astrophotography.
 | **6. Tangent-Error Compensation** | How much does software-based tangent-error compensation improve tracking accuracy? | Direct comparison between constant-speed and compensated tracking. |
 | **7. Final Validation** | What is the maximum achievable performance of the optimized tracker? | Final tracking accuracy, exposure limits, and comparison with theoretical expectations. |
 | **8. Astrophotography Demonstration** | What imaging performance can the completed system achieve under dark skies? | Final processed astrophotographs captured with the completed tracker. |
-###  [Try the Live Minimax Tracker Calculator Here!](https://rufaida19-sys.github.io/Single-Axis-Sidereal-Tracking-Testbed/calculator/calculator.html)
+
+
+## 🧮 Calculator & Theoretical Mathematics
+
+Because straight-rod barn door trackers suffer from tangent error, a constant motor speed will inevitably cause tracking drift over long exposures. However, for those of you who do not want to go the extra mile, and plan on sticking to shorter exposures, this calculator can help find the optimum motor speed for you.
+
+* **[Launch the Live Interactive Calculator](https://rufaida19-sys.github.io/Single-Axis-Sidereal-Tracking-Testbed/calculator/calculator.html)** - Input your tracker's physical dimensions to get your optimized motor RPM.
+*  **[Read the Full Mathematical Derivation](./calculator/THEORY.md)** - A deep dive into the calculus, angular error functions, and the equioscillation principle used to solve this problem.
