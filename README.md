@@ -4,7 +4,7 @@
 
 **Author:** Rufaida
  **Status:** Planning Phase
-**Last Updated:** July 10th, 2026
+**Last Updated:** July 13th, 2026
 
 ## Overview
 In this project i will use the classic single-arm barn door star tracker (inspired by [George Haig's design](https://en.wikipedia.org/wiki/Barn_door_tracker)) as a foundation for an iterative engineering investigation into sidereal tracking performance. Rather than simply replicating an existing design, I will modify the tracker through several iterations, to look into how factors such as tangent error compensation, polar alignment accuracy and mechanical stability affect its ability to track the night sky for long exposure astrophotography. 
@@ -19,10 +19,10 @@ barn door sidereal tracker using accessible and affordable materials
 - Derive the theoretical tangent error of a tangent-arm tracker and predict the exact star trailing at constant speed.
 - Validate the derivation experimentally by taking constant-speed photos and measuring the actual star trails.
 Compare theory to reality.
-- Investigate, quantify and minimize discrepancies** by refining polar alignment, reducing mechanical backlash, and tightening structural flexure without changing the motor speed.
+- Investigate, quantify and minimize discrepancies by refining polar alignment, reducing mechanical backlash, and tightening structural flexure without changing the motor speed.
 - Characterize the system's sensitivity to polar alignemnt to determine the alignment accuracy required for 3-minute exposures at 50mm.
 - Develop a simple  tool that calculates step delay tables for any user's hinge length and rod pitch.
-- Implement software-based tangent compensation** using motor speed correction, and demonstrate that the remaining tangent error is eliminated.
+- Implement software-based tangent compensation using motor speed correction, and demonstrate that the remaining tangent error is eliminated.
 - Compare constant-speed tracking with
 tangent-error-compensated tracking to
 determine the practical impact of tangent
@@ -47,9 +47,9 @@ long-exposure DSLR astrophotography.
 | **8. Astrophotography Demonstration** | What imaging performance can the completed system achieve under dark skies? | Final processed astrophotographs captured with the completed tracker. |
 
 
-## 🧮 Calculator & Theoretical Mathematics
+## Calculator & Theoretical Mathematics
 
 Because straight-rod barn door trackers suffer from tangent error, a constant motor speed will inevitably cause tracking drift over long exposures. However, for those of you who do not want to go the extra mile, and plan on sticking to shorter exposures, this calculator can help find the optimum motor speed for you.
 
-* **[Launch the Live Interactive Calculator](https://rufaida19-sys.github.io/Single-Axis-Sidereal-Tracking-Testbed/calculator/calculator.html)** - Input your tracker's physical dimensions to get your optimized motor RPM.
+* **[Launch the Calculator](https://rufaida19-sys.github.io/Single-Axis-Sidereal-Tracking-Testbed/calculator/calculator.html)** - Input your tracker's physical dimensions to get your optimized motor RPM.
 *  **[Read the Full Mathematical Derivation](./calculator/THEORY.md)** - A deep dive into the calculus, angular error functions, and the equioscillation principle used to solve this problem.
