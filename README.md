@@ -52,4 +52,4 @@ long-exposure DSLR astrophotography.
 Because straight-rod barn door trackers suffer from tangent error, a constant motor speed will inevitably cause tracking drift over long exposures. However, for those of you who do not want to go the extra mile, and plan on sticking to shorter exposures, this calculator can find the optimum motor speed for you. (Please note that this is explicitly for straight-rod tracker designs.)
 
 * **[Launch the Calculator](https://rufaida19-sys.github.io/Single-Axis-Sidereal-Tracking-Testbed/calculator/calculator.html)** - Input your tracker's physical dimensions to get your optimized motor RPM.
-*  **[Read the Full Mathematical Derivation](./calculator/THEORY.md)** - A deep dive into the calculus, angular error functions, and the equioscillation principle used to solve this problem.
+*  **[Read the Full Mathematical Derivation](./calculator/theory.md)** - A deep dive into the calculus, angular error functions, and the equioscillation principle used to solve this problem.
